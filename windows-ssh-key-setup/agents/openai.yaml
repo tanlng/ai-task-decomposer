@@ -1,0 +1,4 @@
+interface:
+  display_name: "Windows SSH Key Setup"
+  short_description: "Windows SSH key setup command pack"
+  default_prompt: "Use $windows-ssh-key-setup to generate local, remote, and verification commands for Windows SSH key login setup."

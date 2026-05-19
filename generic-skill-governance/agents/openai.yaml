@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generic Skill Governance"
+  short_description: "Promote reusable skills into a shared skill repo"
+  default_prompt: "Use $generic-skill-governance when deciding whether a skill should become a general reusable capability and moving it into a shared Git-backed skill repository for installation across AI tools."
