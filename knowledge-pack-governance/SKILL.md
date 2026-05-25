@@ -73,9 +73,21 @@ Document:
 Must reach:
 Class.Method
 
+## 3. Architecture Decision Delta
+
+When the change passed through architecture-design, record:
+- what the SDD decided
+- what the DDD decided
+- why this boundary or interaction was chosen
+- what alternatives were rejected
+
+Focus:
+WHY the design changed.
+
 Example:
 
 ```text
 UploadController.Upload
  -> UploadService.Process
  -> ObjectStorageClient.PutObject
+```
