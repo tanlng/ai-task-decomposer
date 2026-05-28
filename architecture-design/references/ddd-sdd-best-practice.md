@@ -8,6 +8,7 @@
 - Let SDD define how the system collaborates to make it happen.
 - Let DDD define where stable business rules and ownership belong.
 - Keep SDD as the first half of `architecture-design`; do not split it into a parallel skill.
+- Keep PRD as an embedded input layer inside `architecture-design`; do not keep a separate PRD owner skill for MVP-evolution work.
 - Keep `Iteration Plan` as a separate layer between roadmap and current-iteration execution.
 
 ## Intake and Triage Rule
@@ -28,6 +29,27 @@ Treat it as `MVP evolution` when:
 Default handling:
 - patch -> PRD if needed, lightweight SDD, DDD only when required, then implementation mapping
 - MVP evolution -> full iterative architecture chain
+
+## PRD Baseline Rule
+
+Before SDD:
+- align the PRD baseline
+- reuse the existing PRD when it already covers the capability
+- update the PRD baseline first when the request conflicts with current PRD
+- collapse conflicting requirement statements into one final PRD baseline before architecture work continues
+
+Stay in PRD-only or lightweight PRD -> SDD mode when:
+- the work is mainly product-rule clarification
+- the change is about interaction wording, protocol semantics, copy, or acceptance criteria
+- no module boundary, interface, data-flow, state-flow, or iteration-order impact exists
+
+Escalate to the full architecture chain when PRD changes affect:
+- module boundaries
+- interfaces
+- data flow
+- state flow
+- iteration ordering
+- performance or evolvability constraints
 
 ## Decision Rule
 

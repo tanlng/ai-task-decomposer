@@ -101,8 +101,8 @@
 
 Skill 边界：
 
-- PRD Skill：产品行为定义、需求规则、交互口径、协议语义、验收标准
-- Architecture Skill：系统结构、SDD、DDD、模块边界、数据流、演进方案
+- PRD 能力：作为 Architecture Skill 的前置输入层，负责产品行为定义、需求规则、交互口径、协议语义、验收标准
+- Architecture Skill：系统结构、PRD 基线、SDD、DDD、模块边界、数据流、迭代规划、演进方案
 - Project Evolution Skill：推进任务状态、开发记录、提测、发布、日报
 - Bug Fix Skill：复杂 Bug 定位 + 严谨修复
 - Bug / Debt Skills：问题池与技术债治理

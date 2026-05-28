@@ -14,7 +14,6 @@ Convert implementation results into traceable engineering knowledge.
 
 This skill complements:
 - architecture-design
-- prd-driven-development
 - debugging
 - refactor
 
