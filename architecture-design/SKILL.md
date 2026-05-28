@@ -91,12 +91,28 @@ description: 系统架构设计与演化。用于那些表面像“新功能定�
 6. 实现映射
 7. 风险与取舍
 
+## 文档落盘要求
+- 若需求属于 `MVP 演化`，上述核心产物不能只出现在回复里，必须写入项目内可追踪文档。
+- 优先复用目标项目已有文档目录与命名习惯；若没有明确约定，默认在目标项目下使用：
+  - `docs/architecture/mvp-baseline.md`
+  - `docs/architecture/iteration-plan.md`
+  - `docs/architecture/capabilities/<capability-slug>.md`
+  - `docs/architecture/freeze-notes.md`
+  - `docs/architecture/adr/<adr-slug>.md`
+- 本轮若只实现一个能力切片，至少要落盘：
+  - `mvp-baseline.md` 中与当前切片相关的目标/范围更新
+  - `iteration-plan.md` 中当前轮与后续回补信息
+  - 对应能力包文档
+  - `freeze-notes.md` 中本轮冻结点
+- 若用户要求“继续实现”，也要先更新受影响文档，再进入代码修改。
+
 ## 执行纪律
 - 触发后必须显式说明正在使用 `architecture-design`，并说明当前处于哪一步。
-- 若需求属于 MVP 演化，编码前必须留下最小可见设计产物；至少包含 `Triage`、当前能力边界、代码落点。
+- 若需求属于 MVP 演化，编码前必须留下最小可见设计产物，并完成对应文档落盘；至少包含 `Triage`、当前能力边界、代码落点与文档路径。
 - 若复用已有文档结论，必须说明复用了什么、当前改动影响什么，不能静默跳过。
 - 用户即使直接要求“开始实现”，只要本质上是 MVP 演化，也必须先锁定当前轮能力边界。
 - 每个实质性阶段结束后，必须留下可续接状态，例如：`Triage complete`、`Baseline frozen`、`Capability packet ready`、`Implementation in progress`、`Freeze note updated`。
+- 阶段状态不能只写在回复里；对 MVP 演化，至少同步到对应的 freeze note 或 iteration plan 文档。
 
 ## 读取参考
 - 详细判断规则、检查清单、文档最小字段，读取 `references/ddd-sdd-best-practice.md`。
@@ -108,3 +124,4 @@ description: 系统架构设计与演化。用于那些表面像“新功能定�
 - 明明是 MVP 演化，却跳过当前能力包直接改代码
 - 接受临时节点，却不安排后续回补
 - 把 PRD、SDD、DDD 写成互不推导的并列文档
+- 只在回复里口头给出 `Triage` / `Iteration Plan` / `Freeze note`，却没有写入项目文档

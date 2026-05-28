@@ -144,18 +144,38 @@ Enter DDD when:
 - recovery iteration for each temporary node
 - recommended next capability
 
-## 6. Execution Markers
+## 6. Persistence Rule
+
+For `MVP evolution`, do not leave the artifacts only in chat.
+
+Prefer existing project documentation conventions first.
+If none exist, write to:
+- `docs/architecture/mvp-baseline.md`
+- `docs/architecture/iteration-plan.md`
+- `docs/architecture/capabilities/<capability-slug>.md`
+- `docs/architecture/freeze-notes.md`
+- `docs/architecture/adr/<adr-slug>.md`
+
+For a single capability implementation round, at minimum update:
+- MVP baseline
+- iteration plan
+- current capability document
+- freeze notes
+
+## 7. Execution Markers
 
 When the skill triggers, always expose:
 - skill marker: `using architecture-design`
 - current step
 - visible checkpoint before coding
+- written document paths
 - resume marker when continuing from an existing freeze point
 
-## 7. Anti-Patterns
+## 8. Anti-Patterns
 
 - skipping patch/MVP triage
 - roadmap without iteration plan
 - coding MVP evolution work without a current capability packet
 - accepting temporary nodes without recovery planning
 - treating PRD, SDD, and DDD as unrelated parallel documents
+- keeping architecture artifacts only in chat without writing project documents
