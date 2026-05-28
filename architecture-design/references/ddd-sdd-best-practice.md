@@ -1,49 +1,26 @@
-# Patch + MVP + PRD + SDD + DDD Iterative Architecture Best Practice
+# Patch + MVP + PRD + SDD + DDD Quick Reference
 
-## Core Positioning
+## 1. Quick Triage
 
-- Start by triaging the request: patch or MVP evolution.
-- Refine the idea and the MVP before refining the full future architecture.
-- Let PRD define what must happen.
-- Let SDD define how the system collaborates to make it happen.
-- Let DDD define where stable business rules and ownership belong.
-- Keep SDD as the first half of `architecture-design`; do not split it into a parallel skill.
-- Keep PRD as an embedded input layer inside `architecture-design`; do not keep a separate PRD owner skill for MVP-evolution work.
-- Keep `Iteration Plan` as a separate layer between roadmap and current-iteration execution.
+Use `patch` when:
+- the change is local
+- no capability decomposition is needed
+- no multi-iteration planning is needed
 
-## Intake and Triage Rule
-
-Classify the request first.
-
-Treat it as a `patch` when:
-- the change is local and bounded
-- no MVP-capability decomposition is needed
-- no multi-iteration architecture plan is required
-
-Treat it as `MVP evolution` when:
-- the change validates or expands the core idea
-- new capabilities or reordered capabilities are involved
-- responsibilities, interfaces, data flow, state flow, or evolution direction may change
+Use `MVP evolution` when:
+- the request validates or expands the core idea
+- new or reordered capabilities are involved
+- module boundaries, interfaces, data flow, state flow, or evolution direction may change
 - the work will span multiple chats or iterations
 
-Default handling:
-- patch -> PRD if needed, lightweight SDD, DDD only when required, then implementation mapping
-- MVP evolution -> full iterative architecture chain
+## 2. Escalation Rules
 
-## PRD Baseline Rule
-
-Before SDD:
-- align the PRD baseline
-- reuse the existing PRD when it already covers the capability
-- update the PRD baseline first when the request conflicts with current PRD
-- collapse conflicting requirement statements into one final PRD baseline before architecture work continues
-
-Stay in PRD-only or lightweight PRD -> SDD mode when:
+Stay in PRD-only or lightweight `PRD -> SDD` when:
 - the work is mainly product-rule clarification
-- the change is about interaction wording, protocol semantics, copy, or acceptance criteria
-- no module boundary, interface, data-flow, state-flow, or iteration-order impact exists
+- the change is about wording, protocol semantics, copy, or acceptance criteria
+- no boundary, interface, data-flow, state-flow, or iteration-order impact exists
 
-Escalate to the full architecture chain when PRD changes affect:
+Escalate to full architecture flow when PRD changes affect:
 - module boundaries
 - interfaces
 - data flow
@@ -51,276 +28,134 @@ Escalate to the full architecture chain when PRD changes affect:
 - iteration ordering
 - performance or evolvability constraints
 
-## Decision Rule
-
-Use only PRD when:
-- the change is purely about user-visible rules or copy
-- no module responsibility, interface, or data-flow changes exist
-
-Use PRD + lightweight SDD when:
-- one module changes but interface, state flow, or non-functional constraints matter
-- API shape, storage schema, async flow, or error path needs design
-
-Use PRD + SDD + DDD when:
-- multiple modules collaborate
-- business rules need clear ownership
-- bounded contexts or aggregates may change
-- external systems need anti-corruption boundaries
-- the solution must stay replaceable or evolvable
-
-Treat the task as a large scheme when:
-- multiple modules or services are involved
-- the work will span multiple chats or iterations
-- ordering affects boundaries, interfaces, or state flow
-- jumping into implementation would likely create a "make it run first, redesign later" path
-
-## MVP Gating Rule
-
-Before detailed architecture design for MVP evolution:
-- freeze the MVP goal
-- define the idea being validated
-- mark MVP scope and non-scope
-- reject non-MVP capability expansion from the current iteration
-
-If a capability does not pass MVP Alignment:
-- keep it on the roadmap
-- do not expand it into PRD/SDD/DDD for the current iteration
-
-## Recommended Workflow for MVP Evolution
-
-1. Produce `Requirement Intake & Triage`.
-2. Freeze the `MVP / Idea Baseline`.
-3. Produce the global `PRD Baseline`.
-4. Produce the `Global Architecture Charter / SDD`.
-5. Build the `Capability Roadmap`.
-6. Produce the `Iteration Plan`.
-7. Select the current iteration capability set.
-8. Produce the `Current Capability Design Packet`:
-   - MVP Alignment
-   - PRD Baseline for Capability
-   - SDD for Capability
-   - DDD Decision / Content
-   - Implementation Readiness
-9. Produce the `Current Iteration Contract`.
-10. Record ADRs for important trade-offs.
-11. Close the iteration with `Iteration Freeze & Resume Note`.
-
-## Node Status Model
-
-### Stable Node
-
-Use when:
-- the boundary is clear enough to continue development
-- inputs and assumptions are sufficiently stable
-- the work can be resumed directly in a later chat
-
-Must mean:
-- safe to continue
-- preferred next start point for "begin work" style requests
-
-### Temporary Node
-
-Use when:
-- the current iteration must move forward before the area is fully settled
-- the issue is accepted temporarily for MVP progress
-- later cleanup or completion is required
-
-Must mean:
-- not solved yet
-- must be scheduled in a later iteration
-- must not be forgotten after the current chat
-
-## Global Document Checklist
-
-### Requirement Intake & Triage
-
-- request summary
-- patch or MVP evolution
-- judgment rationale
-- whether to enter the full iterative architecture chain
-
-### MVP / Idea Baseline
-
-- core idea
-- value being validated now
-- MVP success criteria
-- MVP scope
-- non-MVP scope
-- what is explicitly deferred
-
-### PRD Baseline
-
-- target capability
-- user/business rules
-- inputs/outputs
-- acceptance criteria
-- boundary conditions
-- relationship to the existing PRD
-
-### Global Architecture Charter / SDD
-
-- system goal under MVP constraints
-- capability map
-- module boundaries
-- main call chain or data flow
-- architecture spine that must not drift
-- minimal extensibility reserved for later evolution
-- intentionally deferred design areas
-
-### Capability Roadmap
-
-For each capability:
-- capability name
-- idea being validated
-- MVP required or not
-- dependencies
-- affected boundaries
-- recommended iteration order
-- validation outcome after completion
-- whether DDD is required
-- whether temporary-node risk exists
-
-### Iteration Plan
-
-Must cover the whole MVP period while keeping different precision levels:
-- overall MVP goal
-- iteration overview
-- first 2-3 iterations with precise planning
-- later iterations with coarse planning and explicit note that further decomposition is needed
-
-For each iteration include:
-- iteration number
-- iteration goal
-- included capabilities
-- dependencies
-- expected increment
-- entry condition
-- exit condition
-- stable nodes
-- temporary nodes
-- follow-up recovery items
-- whether DDD is expected in this iteration
-
-## Current Iteration Artifacts Checklist
-
-### Current Capability Design Packet
-
-#### MVP Alignment
-
-- idea being validated
-- why it is MVP-critical
-- impact if delayed
-- related extensions excluded from this iteration
-
-#### PRD Baseline for Capability
-
-- module goal
-- user/business rules
-- inputs/outputs
-- acceptance criteria
-- boundary conditions
-
-#### SDD for Capability
-
-- responsibilities
-- collaborating modules
-- call chain / sequence
-- data flow / state transitions
-- interfaces / protocol contracts
-- failure path and fallback
-- observability and non-functional constraints
-
-#### DDD Decision / Content
-
-- whether DDD is required
-- if yes: contexts, aggregates/entities, domain services, invariants, events, anti-corruption boundaries
-- if no: why ownership and rule placement remain simple enough without DDD expansion
-
-#### Implementation Readiness
-
-- code/module landing points
-- owner
-- extension points
-- tests
-- release impact
-- open questions
-
-### Current Iteration Contract
-
-- iteration goal
-- MVP capabilities included
-- non-MVP work excluded
-- inputs
-- expected increment
-- definition of done
-- validation method
-
-### ADR
-
-- decision topic
-- alternatives considered
-- chosen option
-- why it fits current MVP
-- deferred option
-- upgrade/reopen condition
-
-### Iteration Freeze & Resume Note
-
-- MVP capabilities completed
-- boundaries frozen this round
-- ideas validated / unvalidated
-- stable nodes ready to continue
-- temporary nodes added this round
-- iteration in which each temporary node must be recovered
-- impact if recovery is skipped
-- recommended next capability
-- assumptions to recheck before resuming
-- conditions that require reopening the MVP baseline or global charter
-
-## DDD Timing Rule
-
-Do not assume DDD must be completed globally upfront.
-
-Prefer:
-- global PRD and SDD first
-- DDD during the first architecture-heavy iteration or the first core capability iteration
-- explicit marking in `Iteration Plan` of which iteration will complete DDD
-
-Escalate to DDD when:
+Enter DDD when:
 - rule ownership is unclear
 - bounded-context separation matters
 - aggregates or anti-corruption boundaries affect replaceability
 
-## Output Template
+## 3. Required Flow
 
-1. Conclusion
-2. Requirement Intake & Triage
-3. MVP / Idea Baseline
-4. PRD Baseline
-5. Global Architecture Charter / SDD
-6. Capability Roadmap
-7. Iteration Plan
-8. Current Capability Design Packet
-9. Current Iteration Contract
-10. ADRs
-11. Iteration Freeze & Resume Note
-12. Risks and next iteration advice
+### MVP evolution
+1. `Requirement Intake & Triage`
+2. `MVP / Idea Baseline`
+3. `PRD Baseline`
+4. `Global Architecture Charter / SDD`
+5. `Capability Roadmap`
+6. `Iteration Plan`
+7. `Current Capability Design Packet`
+8. `Current Iteration Contract`
+9. `ADR`
+10. `Iteration Freeze & Resume Note`
 
-Inside `Current Capability Design Packet`, always keep:
-1. MVP Alignment
-2. PRD Baseline
-3. SDD
-4. DDD Decision / Content
-5. Implementation Readiness
+### Patch / simple task
+1. `Requirement Intake & Triage`
+2. PRD check
+3. lightweight SDD
+4. DDD only when needed
+5. implementation mapping
 
-## Anti-Patterns
+## 4. Node Rules
 
-- skipping patch/MVP triage and jumping straight into design
-- designing the full future system before freezing the MVP
-- having a roadmap without a separate iteration plan
-- expanding non-MVP capabilities inside the current iteration
-- accepting temporary nodes without scheduling recovery iterations
-- doing DDD before SDD makes collaboration clear
-- using DDD terms to hide missing interface or data-flow design
-- writing PRD, SDD, and DDD as unrelated parallel documents
-- documenting decisions only in chat without iteration and resume artifacts
+### Stable Node
+- clear enough to continue development
+- assumptions are stable enough
+- valid as the preferred next start point
+
+### Temporary Node
+- temporarily accepted to move the current iteration forward
+- not considered solved
+- must be assigned to a later recovery iteration
+
+## 5. Minimal Fields
+
+### Requirement Intake & Triage
+- request summary
+- patch or MVP evolution
+- judgment rationale
+
+### MVP / Idea Baseline
+- core idea
+- value being validated
+- MVP success criteria
+- MVP scope / non-scope
+
+### PRD Baseline
+- target capability
+- user/business rules
+- inputs/outputs
+- acceptance criteria
+- final wording if prior PRD conflicted
+
+### Global Architecture Charter / SDD
+- system goal under MVP constraints
+- capability map
+- module boundaries
+- main call chain or data flow
+
+### Capability Roadmap
+- capability name
+- idea being validated
+- MVP required or not
+- dependencies
+- recommended order
+- DDD needed or not
+- temporary-node risk
+
+### Iteration Plan
+- overall MVP goal
+- first 2-3 iterations in detail
+- later iterations in coarse form
+- for each iteration:
+  - goal
+  - included capabilities
+  - dependencies
+  - expected increment
+  - entry / exit condition
+  - stable nodes
+  - temporary nodes
+  - recovery items
+  - whether DDD happens here
+
+### Current Capability Design Packet
+- `MVP Alignment`
+- `PRD Baseline for Capability`
+- `SDD for Capability`
+- `DDD Decision / Content`
+- `Implementation Readiness`
+
+### Current Iteration Contract
+- iteration goal
+- included MVP capabilities
+- excluded work
+- expected increment
+- definition of done
+
+### ADR
+- decision topic
+- chosen option
+- rejected option
+- why it fits the current MVP
+
+### Iteration Freeze & Resume Note
+- completed MVP capabilities
+- frozen boundaries
+- stable nodes ready to continue
+- temporary nodes added
+- recovery iteration for each temporary node
+- recommended next capability
+
+## 6. Execution Markers
+
+When the skill triggers, always expose:
+- skill marker: `using architecture-design`
+- current step
+- visible checkpoint before coding
+- resume marker when continuing from an existing freeze point
+
+## 7. Anti-Patterns
+
+- skipping patch/MVP triage
+- roadmap without iteration plan
+- coding MVP evolution work without a current capability packet
+- accepting temporary nodes without recovery planning
+- treating PRD, SDD, and DDD as unrelated parallel documents

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Writing"
+  short_description: "Write clear heuristic-first skills"
+  default_prompt: "Use $skill-writing to draft or refine a concise heuristic-first SKILL.md."
