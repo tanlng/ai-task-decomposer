@@ -1,0 +1,2 @@
+skill-writing 和 generic-skill-governance 重复
+architecture-design  bug-management engineering-issue-resolution knowledge-pack-governance project-evolution-os system-knowledge-graph tech-debt-management 已经证明过失了，需要读取 Readme.md 重新生成解决核心问题的skill
