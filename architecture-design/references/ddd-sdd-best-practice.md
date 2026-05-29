@@ -33,19 +33,32 @@ Enter DDD when:
 - bounded-context separation matters
 - aggregates or anti-corruption boundaries affect replaceability
 
-## 3. Required Flow
+## 3. Required Flow and Gates
 
 ### MVP evolution
-1. `Requirement Intake & Triage`
-2. `MVP / Idea Baseline`
-3. `PRD Baseline`
-4. `Global Architecture Charter / SDD`
-5. `Capability Roadmap`
-6. `Iteration Plan`
-7. `Current Capability Design Packet`
-8. `Current Iteration Contract`
-9. `ADR`
-10. `Iteration Freeze & Resume Note`
+
+#### Step 1. Baseline
+- `Requirement Intake & Triage`
+- `MVP / Idea Baseline`
+- `PRD Baseline`
+- Gate: do not enter planning or coding before these exist
+
+#### Step 2. Planning
+- `Global Architecture Charter / SDD`
+- `Capability Roadmap`
+- `Iteration Plan`
+- Gate: do not enter capability implementation before roadmap and iteration plan exist
+
+#### Step 3. Current Iteration
+- `Current Capability Design Packet`
+- `Current Iteration Contract`
+- `ADR` when needed
+- Gate: do not code before current capability packet and current iteration contract exist
+
+#### Step 4. Implementation & Freeze
+- code implementation
+- `Iteration Freeze & Resume Note`
+- Gate: do not claim the iteration is complete until freeze note is updated
 
 ### Patch / simple task
 1. `Requirement Intake & Triage`
@@ -171,6 +184,11 @@ When the skill triggers, always expose:
 - written document paths
 - resume marker when continuing from an existing freeze point
 
+If the user asks where the split-work documents are and `Capability Roadmap` or `Iteration Plan` is missing:
+- state that Step 2 is incomplete
+- do not present the work as a valid MVP-implementation pass
+- return to planning artifacts first
+
 ## 8. Anti-Patterns
 
 - skipping patch/MVP triage
@@ -179,3 +197,4 @@ When the skill triggers, always expose:
 - accepting temporary nodes without recovery planning
 - treating PRD, SDD, and DDD as unrelated parallel documents
 - keeping architecture artifacts only in chat without writing project documents
+- explaining missing planning artifacts as “this round forgot them” after coding already happened

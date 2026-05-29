@@ -48,17 +48,39 @@ description: 系统架构设计与演化。用于那些表面像“新功能定�
 - 不需要能力拆分、迭代规划或节点回补
 
 ## 工作流
-### MVP 大方案
-1. `Requirement Intake & Triage`
-2. `MVP / Idea Baseline`
-3. `PRD Baseline`
-4. `Global Architecture Charter / SDD`
-5. `Capability Roadmap`
-6. `Iteration Plan`
-7. `Current Capability Design Packet`
-8. `Current Iteration Contract`
-9. `ADR`
-10. `Iteration Freeze & Resume Note`
+### MVP 大方案四步法
+#### Step 1. Baseline
+- 产物：
+  - `Requirement Intake & Triage`
+  - `MVP / Idea Baseline`
+  - `PRD Baseline`
+- Gate：
+  - 未完成这 3 项，不进入架构拆分或代码实现
+
+#### Step 2. Planning
+- 产物：
+  - `Global Architecture Charter / SDD`
+  - `Capability Roadmap`
+  - `Iteration Plan`
+- Gate：
+  - 未完成拆分工作文档，不进入具体能力实现
+  - 若用户追问“拆分工作文档在哪里”，直接判定当前仍停留在 Step 2 未完成
+
+#### Step 3. Current Iteration
+- 产物：
+  - `Current Capability Design Packet`
+  - `Current Iteration Contract`
+  - 按需 `ADR`
+- Gate：
+  - 未完成当前能力包和当前轮契约，不进入代码修改
+
+#### Step 4. Implementation & Freeze
+- 产物：
+  - 代码实现
+  - `Iteration Freeze & Resume Note`
+- Gate：
+  - 实现完成后必须更新冻结点
+  - 不能只报测试通过或口头标记 `Freeze note updated`
 
 ### 补丁 / 简单任务
 1. `Requirement Intake & Triage`
@@ -70,17 +92,18 @@ description: 系统架构设计与演化。用于那些表面像“新功能定�
 ## 最小输出
 ### MVP 大方案
 1. 结论摘要
-2. `Requirement Intake & Triage`
-3. `MVP / Idea Baseline`
-4. `PRD Baseline`
-5. `Global Architecture Charter / SDD`
-6. `Capability Roadmap`
-7. `Iteration Plan`
-8. `Current Capability Design Packet`
-9. `Current Iteration Contract`
-10. `ADRs`
-11. `Iteration Freeze & Resume Note`
-12. 风险与后续建议
+2. 当前 Step
+3. `Requirement Intake & Triage`
+4. `MVP / Idea Baseline`
+5. `PRD Baseline`
+6. `Global Architecture Charter / SDD`
+7. `Capability Roadmap`
+8. `Iteration Plan`
+9. `Current Capability Design Packet`
+10. `Current Iteration Contract`
+11. `ADRs`
+12. `Iteration Freeze & Resume Note`
+13. 风险与后续建议
 
 ### 补丁 / 简单任务
 1. 结论摘要
@@ -113,6 +136,9 @@ description: 系统架构设计与演化。用于那些表面像“新功能定�
 - 用户即使直接要求“开始实现”，只要本质上是 MVP 演化，也必须先锁定当前轮能力边界。
 - 每个实质性阶段结束后，必须留下可续接状态，例如：`Triage complete`、`Baseline frozen`、`Capability packet ready`、`Implementation in progress`、`Freeze note updated`。
 - 阶段状态不能只写在回复里；对 MVP 演化，至少同步到对应的 freeze note 或 iteration plan 文档。
+- 对 MVP 演化，不允许跳 Step。
+- 若 Step 2 的 `Capability Roadmap` 或 `Iteration Plan` 缺失，就不能声称“开始实现新的 MVP”。
+- 若 Step 4 已发生，但前置 Step 文档缺失，必须先承认当前实现违反技能流程，再回补文档，不得把这种情况表述成“只是这轮漏了”。
 
 ## 读取参考
 - 详细判断规则、检查清单、文档最小字段，读取 `references/ddd-sdd-best-practice.md`。
@@ -125,3 +151,4 @@ description: 系统架构设计与演化。用于那些表面像“新功能定�
 - 接受临时节点，却不安排后续回补
 - 把 PRD、SDD、DDD 写成互不推导的并列文档
 - 只在回复里口头给出 `Triage` / `Iteration Plan` / `Freeze note`，却没有写入项目文档
+- 用“我这轮漏了”来掩盖 Step Gate 实际未通过
