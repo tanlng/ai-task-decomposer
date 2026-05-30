@@ -1,13 +1,17 @@
 ---
 name: generic-skill-governance
-description: 通用 Skill 治理、抽取、发布与安装流程。Use when Codex needs to decide whether a project-local or ad-hoc skill should become a reusable general capability; create or refactor a skill into a configured shared skill repository; prepare it for Git publication; or install/sync that Git-hosted skill through cc-switch and onward into Codex, Claude Code, or other AI tools.
+description: 通用 Skill 治理与编写流程。Use when Codex needs to create, rewrite, merge, split, promote, publish, or install a reusable skill, especially when skill boundaries are unclear, triggers overlap, or a `SKILL.md` needs to be rewritten into a concise heuristic-first form.
 ---
 
 # Generic Skill Governance
 
 ## Purpose
 
-Use this skill to promote useful project-local skills into a shared, Git-backed skill repository and make them installable across AI tools.
+Use this skill to own the full lifecycle of a reusable skill:
+
+- decide whether a skill should exist, merge, split, stay local, or become shared
+- rewrite `SKILL.md` so the trigger and workflow are clear
+- prepare the skill for Git publication and installation across AI tools
 
 Resolve the shared skill repository before editing. Prefer an explicit user-provided path. Otherwise look for a current Git workspace that is clearly the shared skill repository, or ask for the path.
 
@@ -20,20 +24,26 @@ SHARED_SKILL_REPO
 
 ## Decision First
 
-Before moving any skill, classify it:
+Before changing any skill, classify the problem:
 
+- Keep as-is: the skill already owns one clear entry problem and only needs minor content edits.
 - Keep local: project-specific workflow, secrets, repo-only paths, one-off process.
 - Promote to shared repo: reusable across projects, stable trigger words, no private implementation details, useful for multiple AI tools.
 - Split: generic workflow goes to shared repo; project-specific examples stay in the project.
+- Merge or narrow: when two skills compete for the same trigger, assign one entry problem to one skill before editing content.
 
 For detailed criteria, read `references/promotion-criteria.md`.
 
-## Promotion Workflow
+## Governance Workflow
 
-1. Identify the candidate skill and its current location.
-2. Remove project-only assumptions, secrets, machine-specific paths, and private examples.
-3. Choose a lowercase hyphen-case skill name under 64 characters.
-4. Create or update a top-level folder in the shared skill repository:
+1. Identify the candidate skill or the overlapping skill pair and its current location.
+2. Decide the ownership boundary first:
+   - If two skills overlap, decide which skill owns the entry problem and whether the other should narrow or merge.
+   - If one skill is reusable, decide whether it stays local or is promoted.
+3. Rewrite the surviving `SKILL.md` so its frontmatter and workflow match that ownership boundary.
+4. Remove project-only assumptions, secrets, machine-specific paths, and private examples from any skill that will become shared.
+5. Choose a lowercase hyphen-case skill name under 64 characters.
+6. Create or update a top-level folder in the shared skill repository:
 
 ```text
 shared-skill-repo/
@@ -47,12 +57,12 @@ shared-skill-repo/
 
 Only create resource folders that are actually needed.
 
-5. Put trigger conditions in `SKILL.md` frontmatter `description`, not only in the body.
-6. Keep `SKILL.md` concise. Move long policy, examples, or tool-specific installation details into `references/`.
-7. Add or update `agents/openai.yaml` when the skill should be visible in tool UIs.
-8. Validate structure and content.
-9. Commit and push through Git.
-10. Install from the Git repository through cc-switch, then sync to Codex or other target tools.
+7. Put trigger conditions in `SKILL.md` frontmatter `description`, not only in the body.
+8. Keep `SKILL.md` concise. Move long policy, examples, or tool-specific installation details into `references/`.
+9. Add or update `agents/openai.yaml` when the skill should be visible in tool UIs.
+10. Validate structure and content.
+11. Commit and push through Git.
+12. Install from the Git repository through cc-switch, then sync to Codex or other target tools.
 
 For the Git and installation handoff, read `references/git-and-install-flow.md`.
 
@@ -68,16 +78,38 @@ Every promoted skill must have:
 
 Prefer:
 
+- Trigger clarity first.
 - Short decision trees.
 - Concrete examples.
 - One-level references.
 - Scripts only for deterministic repeated operations.
+- One entry problem per skill.
+- Heuristic workflows over long templates.
 
 Avoid:
 
 - Long README-style background.
 - Changelogs, installation essays, or duplicate docs inside the skill folder.
 - Vague descriptions like “helps with architecture” without trigger scenarios.
+- Two skills competing for the same entry problem.
+
+## `SKILL.md` Writing Rules
+
+When the skill already has the right owner and only its content needs work:
+
+- Make `description` say both what the skill does and when it should trigger.
+- Name concrete request shapes, not abstract intentions.
+- Mention competing cases that should use another skill instead.
+- Keep the body to the minimum useful workflow.
+- Move long examples and checklists into `references/` when they are not needed for triggering.
+
+Use this compact body shape by default:
+
+1. `What To Use It For`
+2. `Core Heuristics`
+3. `Workflow` or `Decision Rules`
+4. `Minimal Output` when the skill controls visible deliverables
+5. `Anti-Patterns` when misuse is likely
 
 ## Repository Rules
 
