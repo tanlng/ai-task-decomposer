@@ -1,49 +1,50 @@
 ---
 name: generic-skill-governance
-description: 通用 Skill 治理与编写流程。Use when Codex needs to create, rewrite, merge, split, promote, publish, or install a reusable skill, especially when skill boundaries are unclear, triggers overlap, or a `SKILL.md` needs to be rewritten into a concise heuristic-first form.
+description: 通用 Skill 治理、评分与编写流程。Use when Codex needs to score, create, rewrite, merge, split, promote, publish, or install a reusable skill, especially when skill boundaries are unclear, triggers overlap, or a `SKILL.md` needs to be rewritten into a concise heuristic-first form.
 ---
 
 # Generic Skill Governance
 
-## Purpose
+Use this skill to score, shape, and publish reusable skills.
 
-Use this skill to own the full lifecycle of a reusable skill:
+Use it to:
 
 - decide whether a skill should exist, merge, split, stay local, or become shared
 - rewrite `SKILL.md` so the trigger and workflow are clear
-- prepare the skill for Git publication and installation across AI tools
+- prepare a reusable skill for Git publication and installation across AI tools
 
-Resolve the shared skill repository before editing. Prefer an explicit user-provided path. Otherwise look for a current Git workspace that is clearly the shared skill repository, or ask for the path.
+Resolve the shared skill repository before editing. Prefer a user-provided path. Otherwise look for a clear shared skill repo first. Common env names: `AI_TASK_DECOMPOSER_REPO`, `SHARED_SKILL_REPO`.
 
-Common environment variable names teams may use:
+## Quick Score
 
-```text
-AI_TASK_DECOMPOSER_REPO
-SHARED_SKILL_REPO
-```
+Score the candidate before deciding whether to keep, merge, split, or promote it:
 
-## Decision First
+- Entry problem clarity: `0-5`
+- Trigger uniqueness: `0-5`
+- Reuse and sanitization readiness: `0-5`
+- Packaging and installation readiness: `0-5`
+- Context efficiency: `0-5`
 
-Before changing any skill, classify the problem:
+Decision thresholds:
 
-- Keep as-is: the skill already owns one clear entry problem and only needs minor content edits.
-- Keep local: project-specific workflow, secrets, repo-only paths, one-off process.
-- Promote to shared repo: reusable across projects, stable trigger words, no private implementation details, useful for multiple AI tools.
-- Split: generic workflow goes to shared repo; project-specific examples stay in the project.
-- Merge or narrow: when two skills compete for the same trigger, assign one entry problem to one skill before editing content.
+- `22-25`: keep as an independent reusable skill; promote if cross-project value exists
+- `17-21`: promising, but rewrite or narrow before promotion
+- `12-16`: keep local for now, or split generic and project-specific parts
+- `0-11`: merge, retire, or redesign because the skill boundary is weak
 
-For detailed criteria, read `references/promotion-criteria.md`.
+Read `references/skill-scorecard.md` for the full rubric and `references/promotion-criteria.md` for promotion rules.
 
 ## Governance Workflow
 
 1. Identify the candidate skill or the overlapping skill pair and its current location.
-2. Decide the ownership boundary first:
-   - If two skills overlap, decide which skill owns the entry problem and whether the other should narrow or merge.
-   - If one skill is reusable, decide whether it stays local or is promoted.
-3. Rewrite the surviving `SKILL.md` so its frontmatter and workflow match that ownership boundary.
-4. Remove project-only assumptions, secrets, machine-specific paths, and private examples from any skill that will become shared.
-5. Choose a lowercase hyphen-case skill name under 64 characters.
-6. Create or update a top-level folder in the shared skill repository:
+2. Score it using the quick score and confirm the weakest dimensions.
+3. Decide the ownership boundary first:
+   - Overlap: pick one owner for one entry problem, then merge or narrow the others.
+   - Reusable: decide whether it stays local or is promoted.
+4. Rewrite the surviving `SKILL.md` so its frontmatter and workflow match that ownership boundary.
+5. Remove project-only assumptions, secrets, machine-specific paths, and private examples from any skill that will become shared.
+6. Choose a lowercase hyphen-case skill name under 64 characters.
+7. Create or update a top-level folder in the shared skill repository:
 
 ```text
 shared-skill-repo/
@@ -57,18 +58,18 @@ shared-skill-repo/
 
 Only create resource folders that are actually needed.
 
-7. Put trigger conditions in `SKILL.md` frontmatter `description`, not only in the body.
-8. Keep `SKILL.md` concise. Move long policy, examples, or tool-specific installation details into `references/`.
-9. Add or update `agents/openai.yaml` when the skill should be visible in tool UIs.
-10. Validate structure and content.
-11. Commit and push through Git.
-12. Install from the Git repository through cc-switch, then sync to Codex or other target tools.
+8. Put trigger conditions in `SKILL.md` frontmatter `description`, not only in the body.
+9. Keep `SKILL.md` concise. Move long policy, examples, or tool-specific installation details into `references/`.
+10. Add or update `agents/openai.yaml` when the skill should be visible in tool UIs.
+11. Validate structure, score, and content, then re-score after meaningful edits.
+12. Commit and push through Git.
+13. Install from the Git repository through cc-switch, then sync to Codex or other target tools.
 
-For the Git and installation handoff, read `references/git-and-install-flow.md`.
+Read `references/git-and-install-flow.md` for the Git and install handoff.
 
-## Skill Content Rules
+## Heuristics
 
-Every promoted skill must have:
+Every reusable skill should have:
 
 - `SKILL.md` with only `name` and `description` in YAML frontmatter.
 - A clear workflow in the body.
@@ -111,7 +112,7 @@ Use this compact body shape by default:
 4. `Minimal Output` when the skill controls visible deliverables
 5. `Anti-Patterns` when misuse is likely
 
-## Repository Rules
+## Validation And Handoff
 
 When editing the shared skill repo:
 
@@ -128,18 +129,14 @@ git diff --stat
 git status --short --untracked-files=all
 ```
 
-If asked to publish, stage only relevant files and create a focused commit.
-
-## cc-switch And Tool Installation
-
-Do not invent cc-switch commands. First check whether `cc-switch` is installed and inspect its local help or docs:
+If asked to publish, stage only relevant files and create a focused commit. Do not invent `cc-switch` commands; check local help first:
 
 ```powershell
 Get-Command cc-switch -ErrorAction SilentlyContinue
 cc-switch --help
 ```
 
-If the command is unavailable or the install syntax is unclear, provide a handoff with:
+If `cc-switch` is unavailable or unclear, provide a handoff with:
 
 - Git repository URL or local repo path.
 - Skill folder name.
@@ -147,29 +144,20 @@ If the command is unavailable or the install syntax is unclear, provide a handof
 - Files changed.
 - Validation performed.
 
-For Codex direct fallback, a skill folder must ultimately be available under the active Codex skills directory. On Windows this is commonly:
-
-```text
-%USERPROFILE%\.codex\skills\skill-name
-```
-
-Prefer the user's cc-switch flow when available.
-
-## Validation
-
 Validate at three levels:
 
 1. Structure: required `SKILL.md`, valid frontmatter, sensible folder name.
 2. Trigger: `description` says exactly when to use the skill.
 3. Reuse: no hidden project context is required to apply the skill elsewhere.
 
-If Python validation tooling is available, run the skill validator. If it fails because dependencies such as PyYAML are missing, report that and still manually inspect the frontmatter.
+If the repository provides `scripts/evaluate_skills.py`, run it and use the score as a supporting signal, not the only decision maker.
 
-## Final Report
+If Python validation tooling is available, run the skill validator. If it fails because dependencies such as PyYAML are missing, report that and still manually inspect the frontmatter.
 
 When done, report:
 
 - Skill name and path.
+- Quick score and weakest dimensions.
 - Why it is generic or why it stayed local.
 - Files added or changed.
 - Validation result.

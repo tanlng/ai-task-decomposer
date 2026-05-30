@@ -1,4 +1,4 @@
 interface:
   display_name: "Generic Skill Governance"
   short_description: "Govern and write reusable skills"
-  default_prompt: "Use $generic-skill-governance when creating, rewriting, merging, splitting, promoting, publishing, or installing a reusable skill."
+  default_prompt: "Use $generic-skill-governance when scoring, creating, rewriting, merging, splitting, promoting, publishing, or installing a reusable skill."
